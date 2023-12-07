@@ -5,7 +5,7 @@ The project aims to leverage modern technologies to streamline the development o
 
 
 ## How to get the project running
-1. Clone the repository: `git clone` http://github.com/tompra/chat_app.git
+1. Clone the repository: `git clone  http://github.com/tompra/chat_app.git`
 2. Install dependencies: `npm install`
 3. Run the project: `npm start`
 4. Run the app on the Android or iOS emulator
