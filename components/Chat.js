@@ -96,6 +96,7 @@ const Chat = ({ route, navigation }) => {
     const renderDay = (props) => {
         return <Day {...props} textStyle={{ color: '#fff' }} />;
     };
+
     const renderTime = (props) => {
         return (
             <Time
@@ -103,6 +104,20 @@ const Chat = ({ route, navigation }) => {
                 timeTextStyle={{
                     left: { color: '#000' },
                     right: { color: '#000' },
+                }}
+            />
+        );
+    };
+
+    const renderInput = (props) => {
+        return (
+            <InputToolbar
+                {...props}
+                containerStyle={{
+                    borderRadius: 25,
+                    paddingLeft: 5,
+                    marginBottom: 5,
+                    marginHorizontal: 5,
                 }}
             />
         );
@@ -119,6 +134,7 @@ const Chat = ({ route, navigation }) => {
                 renderTime={renderTime}
                 renderDay={renderDay}
                 alignTop={true}
+                renderInputToolbar={(props) => renderInput(props)}
             />
             {Platform.OS === 'android' ? (
                 <KeyboardAvoidingView behavior='height' />
@@ -130,8 +146,6 @@ const Chat = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 0,
-        margin: 0,
     },
 });
 
