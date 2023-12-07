@@ -14,7 +14,8 @@ The project aims to leverage modern technologies to streamline the development o
 - React Native
 - Expo
 - Google Firestore Database
-- Google Firebase 
+- Google Firebase
+- Gifted chat
 
 ## Key Features
 - A page where users can enter their name and choose a background color for the chat screen before joining the chat.
