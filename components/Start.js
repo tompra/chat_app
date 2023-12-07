@@ -9,7 +9,7 @@ import {
 import { useState } from 'react';
 
 const Start = ({ navigation }) => {
-    const [selectedColor, setSelectedColor] = useState('#fff');
+    const [selectedColor, setSelectedColor] = useState('#92965B');
     const [name, setName] = useState('');
     const backgroundImg = require('../assets/backgroundImage.png');
     const colorOptions = ['#090C08', '#474056', '#8A95A5', '#B9C6AE'];
