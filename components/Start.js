@@ -95,7 +95,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '300',
         color: '#757083',
-        alignSelf: 'flex-start',
         paddingHorizontal: 20,
     },
     colorOption: {
