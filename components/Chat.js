@@ -8,42 +8,45 @@ import {
     Time,
     InputToolbar,
 } from 'react-native-gifted-chat';
+import {
+    addDoc,
+    collection,
+    query,
+    onSnapshot,
+    orderBy,
+} from 'firebase/firestore';
 
-const Chat = ({ route, navigation }) => {
-    const { name, selectedColor } = route.params;
+const Chat = ({ route, navigation, db }) => {
+    const { name, selectedColor, userID } = route.params;
     // messages as a state
     const [messages, setMessages] = useState([]);
 
     // custom function when user sends a message
     const onSend = (newMessages) => {
-        //setter(setMessage) is called with a callback function with the paramterer refers to the latest value of the state
-        setMessages((previousMessages) =>
-            GiftedChat.append(previousMessages, newMessages)
-        );
+        return addDoc(collection(db, 'messages'), newMessages[0]);
     };
 
     useEffect(() => {
         navigation.setOptions({ title: name });
         // set message to message object from the gifted chat, required: id, createdAt, user, text.
-        setMessages([
-            {
-                _id: 1,
-                createdAt: new Date(),
-                text: 'Hello dev',
-                user: {
-                    _id: 2,
-                    name: 'React Native',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
-            },
-            // message system message
-            {
-                _id: 2,
-                text: 'System message',
-                system: true,
-                createdAt: new Date(),
-            },
-        ]);
+        const q = query(
+            collection(db, 'messages'),
+            orderBy('createdAt', 'desc')
+        );
+        const unsubMessages = onSnapshot(q, (docs) => {
+            let newMessages = [];
+            docs.forEach((doc) => {
+                newMessages.push({
+                    id: doc.id,
+                    ...doc.data(),
+                    createdAt: new Date(doc.data().createdAt.toDate()),
+                });
+            });
+            setMessages(newMessages);
+        });
+        return () => {
+            if (unsubMessages) unsubMessages();
+        };
     }, []);
 
     // rendering bubble for messages
@@ -128,7 +131,7 @@ const Chat = ({ route, navigation }) => {
             <GiftedChat
                 messages={messages}
                 onSend={(messages) => onSend(messages)}
-                user={{ _id: 1 }}
+                user={{ _id: userID, name: name }}
                 renderBubble={renderBubble}
                 renderSystemMessage={renderSystemMessage}
                 renderTime={renderTime}
