@@ -30,7 +30,10 @@ const Start = ({ navigation }) => {
                 });
                 Alert.alert('Signed in Succesfully!');
             })
-            .catch((err) => Alert.alert('Unable to sign in, try later again'));
+            .catch((err) => {
+                console.error(`Unable to sign user: ${err}`);
+                Alert.alert('Unable to sign in, try later again');
+            });
     };
 
     return (

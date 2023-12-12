@@ -15,39 +15,67 @@ import {
     onSnapshot,
     orderBy,
 } from 'firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Chat = ({ route, navigation, db }) => {
+const Chat = ({ route, navigation, db, isConnected }) => {
     const { name, selectedColor, userID } = route.params;
-    // messages as a state
     const [messages, setMessages] = useState([]);
 
-    // custom function when user sends a message
-    const onSend = (newMessages) => {
-        return addDoc(collection(db, 'messages'), newMessages[0]);
-    };
-
+    let unsubMessages;
     useEffect(() => {
         navigation.setOptions({ title: name });
-        // set message to message object from the gifted chat, required: id, createdAt, user, text.
-        const q = query(
-            collection(db, 'messages'),
-            orderBy('createdAt', 'desc')
-        );
-        const unsubMessages = onSnapshot(q, (docs) => {
-            let newMessages = [];
-            docs.forEach((doc) => {
-                newMessages.push({
-                    id: doc.id,
-                    ...doc.data(),
-                    createdAt: new Date(doc.data().createdAt.toDate()),
+
+        if (isConnected === true) {
+            if (unsubMessages) unsubMessages();
+            unsubMessages = null;
+
+            const q = query(
+                collection(db, 'messages'),
+                orderBy('createdAt', 'desc')
+            );
+            unsubMessages = onSnapshot(q, (docs) => {
+                let newMessages = [];
+                docs.forEach((doc) => {
+                    newMessages.push({
+                        id: doc.id,
+                        ...doc.data(),
+                        createdAt: new Date(doc.data().createdAt.toDate()),
+                    });
                 });
+                cacheMessages(newMessages);
+                setMessages(newMessages);
             });
-            setMessages(newMessages);
-        });
+        } else loadCachedMessages();
+
         return () => {
             if (unsubMessages) unsubMessages();
         };
-    }, []);
+    }, [isConnected]);
+
+    const cacheMessages = async (messagesToCache) => {
+        try {
+            await AsyncStorage.setItem(
+                'messages',
+                JSON.stringify(messagesToCache)
+            );
+        } catch (error) {
+            console.error(`Error in cacheMessage: ${err.message}`);
+        }
+    };
+
+    const loadCachedMessages = async () => {
+        try {
+            const cachedMessages =
+                (await AsyncStorage.getItem('messages')) || [];
+            if (cachedMessages) setMessages(JSON.parse(cachedMessages));
+        } catch (error) {
+            console.error(`Error in loadMessages: ${err}`);
+        }
+    };
+
+    const onSend = (newMessages) => {
+        return addDoc(collection(db, 'messages'), newMessages[0]);
+    };
 
     // rendering bubble for messages
     const renderBubble = (props) => {
@@ -113,17 +141,19 @@ const Chat = ({ route, navigation, db }) => {
     };
 
     const renderInput = (props) => {
-        return (
-            <InputToolbar
-                {...props}
-                containerStyle={{
-                    borderRadius: 25,
-                    paddingLeft: 5,
-                    marginBottom: 5,
-                    marginHorizontal: 5,
-                }}
-            />
-        );
+        if (isConnected) {
+            return (
+                <InputToolbar
+                    {...props}
+                    containerStyle={{
+                        borderRadius: 25,
+                        paddingLeft: 5,
+                        marginBottom: 5,
+                        marginHorizontal: 5,
+                    }}
+                />
+            );
+        } else return null;
     };
 
     return (
