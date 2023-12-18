@@ -11,9 +11,10 @@ import {
 import { LogBox, Alert } from 'react-native';
 import { useNetInfo } from '@react-native-community/netinfo';
 import { useEffect } from 'react';
+import { getStorage } from 'firebase/storage';
 
 const Stack = createNativeStackNavigator();
-LogBox.ignoreAllLogs(['AsyncStorage has been extracted from']);
+LogBox.ignoreLogs(['@firebase/auth:, Auth (10.3.1)']);
 
 const App = () => {
     const connectionStatus = useNetInfo();
@@ -38,7 +39,7 @@ const App = () => {
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
+    const storage = getStorage(app);
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName='Start'>
@@ -48,6 +49,7 @@ const App = () => {
                         <Chat
                             isConnected={connectionStatus.isConnected}
                             db={db}
+                            storage={storage}
                             {...props}
                         />
                     )}
