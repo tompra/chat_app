@@ -7,6 +7,7 @@ import {
     Day,
     Time,
     InputToolbar,
+    Send,
 } from 'react-native-gifted-chat';
 import {
     addDoc,
@@ -16,6 +17,7 @@ import {
     orderBy,
 } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { IconButton } from 'react-native-paper';
 
 const Chat = ({ route, navigation, db, isConnected }) => {
     const { name, selectedColor, userID } = route.params;
@@ -156,6 +158,21 @@ const Chat = ({ route, navigation, db, isConnected }) => {
         } else return null;
     };
 
+    const renderSend = (sendProps) => {
+        return (
+            <Send {...sendProps}>
+                <View>
+                    <IconButton
+                        icon='send'
+                        size={30}
+                        color='#007AFF'
+                        style={{ paddingTop: 15 }}
+                    />
+                </View>
+            </Send>
+        );
+    };
+
     return (
         <View style={[styles.container, { backgroundColor: selectedColor }]}>
             <GiftedChat
@@ -166,9 +183,10 @@ const Chat = ({ route, navigation, db, isConnected }) => {
                 renderSystemMessage={renderSystemMessage}
                 renderTime={renderTime}
                 renderDay={renderDay}
-                alignTop={true}
                 renderInputToolbar={(props) => renderInput(props)}
+                alignTop={true}
                 alwaysShowSend={true}
+                renderSend={renderSend}
             />
             {Platform.OS === 'android' ? (
                 <KeyboardAvoidingView behavior='height' />

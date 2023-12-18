@@ -3,11 +3,11 @@ import {
     Text,
     View,
     ImageBackground,
-    TextInput,
     TouchableOpacity,
     Alert,
 } from 'react-native';
 import { useState } from 'react';
+import { TextInput } from 'react-native-paper';
 import { getAuth, signInAnonymously } from 'firebase/auth';
 
 const Start = ({ navigation }) => {
@@ -44,6 +44,7 @@ const Start = ({ navigation }) => {
                     style={styles.textInput}
                     value={name}
                     onChangeText={setName}
+                    mode='outlined'
                     placeholder='Your name'
                 />
                 <Text style={styles.chooseText}>Choose Background Color:</Text>
@@ -93,7 +94,6 @@ const styles = StyleSheet.create({
     },
     textInput: {
         width: '88%',
-        padding: 15,
         borderWidth: 1,
         fontSize: 16,
         fontWeight: '300',
