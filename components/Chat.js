@@ -167,7 +167,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
                         icon='send'
                         size={30}
                         color='#007AFF'
-                        style={{ paddingTop: 15 }}
+                        style={{ paddingTop: 16 }}
                     />
                 </View>
             </Send>

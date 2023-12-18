@@ -41,13 +41,13 @@ const CustomAction = ({ wrapperStyle, iconTextStyle }) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: 26,
-        height: 26,
+        width: 30,
+        height: 30,
         marginLeft: 10,
         marginBottom: 10,
     },
     wrapper: {
-        borderRadius: 13,
+        borderRadius: 15,
         borderColor: '#b2b2b2',
         borderWidth: 2,
         flex: 1,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     iconText: {
         color: '#b2b2b2',
         fontWeight: 'bold',
-        fontSize: 10,
+        fontSize: 18,
         backgroundColor: 'transparent',
         textAlign: 'center',
     },
