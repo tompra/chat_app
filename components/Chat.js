@@ -18,9 +18,10 @@ import {
 } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomAction from './CustomActions';
+import MapView from 'react-native-maps';
 import { IconButton } from 'react-native-paper';
 
-const Chat = ({ route, navigation, db, isConnected }) => {
+const Chat = ({ route, navigation, db, isConnected, storage }) => {
     const { name, selectedColor, userID } = route.params;
     const [messages, setMessages] = useState([]);
 
@@ -114,7 +115,6 @@ const Chat = ({ route, navigation, db, isConnected }) => {
         );
     };
 
-    // rendering system message for styling the system message
     const renderSystemMessage = (props) => {
         return (
             <SystemMessage
@@ -175,7 +175,32 @@ const Chat = ({ route, navigation, db, isConnected }) => {
     };
 
     const renderCustomActions = (props) => {
-        return <CustomAction {...props} />;
+        return <CustomAction {...props} storage={storage} userID={userID} />;
+    };
+
+    const renderCustomView = (props) => {
+        const { currentMessage } = props;
+        if (currentMessage.location) {
+            return (
+                <MapView
+                    style={{
+                        width: 150,
+                        height: 150,
+                        margin: 8,
+                        borderTopRightRadius: 20,
+                        borderTopLeftRadius: 15,
+                    }}
+                    region={{
+                        latitude: currentMessage.location.latitude,
+                        longitude: currentMessage.location.longitude,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }}
+                    legalLabelInsets={{ bottom: 0, left: 0 }}
+                />
+            );
+        }
+        return null;
     };
 
     return (
@@ -193,6 +218,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
                 alwaysShowSend={true}
                 renderSend={renderSend}
                 renderActions={renderCustomActions}
+                renderCustomView={renderCustomView}
             />
             {Platform.OS === 'android' ? (
                 <KeyboardAvoidingView behavior='height' />
