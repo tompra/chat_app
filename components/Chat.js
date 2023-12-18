@@ -17,6 +17,7 @@ import {
     orderBy,
 } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomAction from './CustomActions';
 import { IconButton } from 'react-native-paper';
 
 const Chat = ({ route, navigation, db, isConnected }) => {
@@ -173,6 +174,10 @@ const Chat = ({ route, navigation, db, isConnected }) => {
         );
     };
 
+    const renderCustomActions = (props) => {
+        return <CustomAction {...props} />;
+    };
+
     return (
         <View style={[styles.container, { backgroundColor: selectedColor }]}>
             <GiftedChat
@@ -187,6 +192,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
                 alignTop={true}
                 alwaysShowSend={true}
                 renderSend={renderSend}
+                renderActions={renderCustomActions}
             />
             {Platform.OS === 'android' ? (
                 <KeyboardAvoidingView behavior='height' />
