@@ -168,6 +168,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
                 renderDay={renderDay}
                 alignTop={true}
                 renderInputToolbar={(props) => renderInput(props)}
+                alwaysShowSend={true}
             />
             {Platform.OS === 'android' ? (
                 <KeyboardAvoidingView behavior='height' />
