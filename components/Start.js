@@ -21,6 +21,10 @@ const Start = ({ navigation }) => {
     const auth = getAuth();
 
     const signInUser = () => {
+        if (!name.trim()) {
+            Alert.alert('Error', 'Name is required');
+            return;
+        }
         signInAnonymously(auth)
             .then((result) => {
                 navigation.navigate('Chat', {
