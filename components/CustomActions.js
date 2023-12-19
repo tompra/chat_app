@@ -29,7 +29,6 @@ const CustomAction = ({
             onSend({ image: imageURL });
         });
     };
-
     const pickImage = async () => {
         let permissions =
             await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -81,13 +80,17 @@ const CustomAction = ({
             async (buttonIndex) => {
                 switch (buttonIndex) {
                     case 0:
-                        pickImage();
-                        return;
+                        try {
+                            await pickImage();
+                            return;
+                        } catch (error) {
+                            console.error(`Error in picking image: ${error}`);
+                        }
                     case 1:
-                        takePhoto();
+                        await takePhoto();
                         return;
                     case 2:
-                        getLocation();
+                        await getLocation();
                     default:
                 }
             }
