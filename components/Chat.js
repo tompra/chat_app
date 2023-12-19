@@ -186,7 +186,7 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
                     style={{
                         width: 150,
                         height: 150,
-                        margin: 8,
+                        margin: 6,
                         borderTopRightRadius: 20,
                         borderTopLeftRadius: 15,
                     }}
@@ -196,7 +196,6 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
                         latitudeDelta: 0.0922,
                         longitudeDelta: 0.0421,
                     }}
-                    legalLabelInsets={{ bottom: 0, left: 0 }}
                 />
             );
         }
