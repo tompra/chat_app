@@ -1,15 +1,9 @@
-import {
-    TouchableOpacity,
-    View,
-    Text,
-    StyleSheet,
-    Alert,
-    Platform,
-} from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet, Alert } from 'react-native';
 import { useActionSheet } from '@expo/react-native-action-sheet';
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
+import { useState } from 'react';
 
 const CustomAction = ({
     wrapperStyle,
@@ -19,6 +13,7 @@ const CustomAction = ({
     userID,
 }) => {
     const actionSheet = useActionSheet();
+    const [image, setImage] = useState(null);
 
     const generateReference = (uri) => {
         const timeStamp = new Date().getTime();
@@ -44,16 +39,21 @@ const CustomAction = ({
         try {
             let permissions =
                 await ImagePicker.requestMediaLibraryPermissionsAsync();
-            console.log('permissions', permissions?.granted);
+            console.log('permissions: ', permissions);
             if (permissions?.granted) {
                 let result = await ImagePicker.launchImageLibraryAsync();
-                console.log('result:', result);
-                if (!result.canceled)
-                    await uploadAndSendImage(result.assets[0].uri);
-                else Alert.alert("Permissions haven't been granted");
+                console.log('result', result);
+
+                if (!result.canceled) {
+                    setImage(result.assets[0]);
+                } else {
+                    setImage(null);
+                }
+            } else {
+                console.error('Media library permissions not granted');
             }
         } catch (error) {
-            console.log(`Error inside the pickImage function: ${error}`);
+            console.error(`Error inside the picking image: ${error}`);
         }
     };
 
