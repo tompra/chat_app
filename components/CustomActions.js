@@ -37,16 +37,32 @@ const CustomAction = ({
     };
     const pickImage = async () => {
         try {
+            console.log('trying to pick image....');
             let permissions =
                 await ImagePicker.requestMediaLibraryPermissionsAsync();
             console.log('permissions: ', permissions);
             if (permissions?.granted) {
-                let result = await ImagePicker.launchImageLibraryAsync();
+                console.log('Permission granted, trying to pick image...');
+                let result = await ImagePicker.launchImageLibraryAsync({
+                    base64: false,
+                    allowsEditing: true,
+                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                    quality: 0.2,
+                });
                 console.log('result', result);
+                if (!result.cancelled) {
+                    console.log('Image picked successfully');
+                    const imageUri = result.assets[0].uri;
 
-                if (!result.canceled) {
-                    setImage(result.assets[0]);
+                    // The following line ensures that the URI has the 'file' scheme
+                    const correctedUri = imageUri.startsWith('file://')
+                        ? imageUri
+                        : `file://${imageUri}`;
+
+                    setImage({ ...result.assets[0], uri: correctedUri });
+                    await uploadAndSendImage(correctedUri);
                 } else {
+                    console.log('Image picking cancelled');
                     setImage(null);
                 }
             } else {
