@@ -50,7 +50,7 @@ const CustomAction = ({
                     quality: 0.2,
                 });
                 console.log('result', result);
-                if (!result.cancelled) {
+                if (!result.canceled) {
                     console.log('Image picked successfully');
                     const imageUri = result.assets[0].uri;
 

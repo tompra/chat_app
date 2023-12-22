@@ -120,7 +120,6 @@ const styles = StyleSheet.create({
     colorsContainer: {
         flexDirection: 'row',
         paddingHorizontal: 20,
-        alignSelf: 'flex-start',
     },
     chooseTitle: {
         fontSize: 16,
