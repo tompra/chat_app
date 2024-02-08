@@ -1,7 +1,5 @@
 # ChatApp
 
-![chatAppInitial](https://github.com/tompra/chat_app/assets/143709419/b5258c84-d885-434b-bf6b-a3ad2f4295f6)
-
 ## Project description
 The project aims to leverage modern technologies to streamline the development of a mobile chat app. By utilizing React Native, Expo, and Google Firestore Database, the goal is to create a feature-rich application with a single codebase, showcasing proficiency in JavaScript mobile development.
    
